@@ -3,6 +3,7 @@ import {useBeerListStore} from "./store/BeerListStore";
 import BeerCard from "../../Components/BeerCard/BeerCard";
 import style from "./HomePage.module.scss"
 import {useAsideStore} from "../../Modules/Aside/store/asideStore";
+import {IBeerStore} from "../BeerPage/store/beerStore";
 
 const HomePage = () => {
 
@@ -12,18 +13,18 @@ const HomePage = () => {
     const [startIndex, setStartIndex] = useState<number>(-5)
     const [currentPage, setCurrentPage] = useState<number>(1)
 
-    useEffect(() => {
-        const handleContextMenu = (e: any) => {
-            e.preventDefault()
-        }
-
-        document.addEventListener("contextmenu", handleContextMenu)
-
-        return () => {
-            document.removeEventListener("contextmenu", handleContextMenu)
-        }
-
-    }, [])
+    // useEffect(() => {
+    //     const handleContextMenu = (e: any) => {
+    //         e.preventDefault()
+    //     }
+    //
+    //     document.addEventListener("contextmenu", handleContextMenu)
+    //
+    //     return () => {
+    //         document.removeEventListener("contextmenu", handleContextMenu)
+    //     }
+    //
+    // }, [])
 
     useEffect(() => {
         if (fetching) {
@@ -53,8 +54,9 @@ const HomePage = () => {
         }
     }
 
-    const selectBeerForDelete = (e: React.MouseEvent<HTMLDivElement>) => {
-        console.log(e.button)
+    const customPreventDefault = (e: React.MouseEvent<HTMLDivElement>, beer: IBeerStore) => {
+        e.preventDefault()
+        addBeers(beer)
     }
 
 
@@ -62,8 +64,11 @@ const HomePage = () => {
         <div className={style.homePage} onScroll={scrollHandler}>
             {beerList.map((beer, index) => {
                 if (index < (startIndex + 15) && index >= startIndex) {
-                    return <div key={beer.id} onClick={selectBeerForDelete}><BeerCard id={beer.id} name={beer.name}
-                                                                                      image_url={beer.image_url}/></div>
+                    return <div key={beer.id} onContextMenu={(e) => customPreventDefault(e, beer)}><BeerCard
+                        id={beer.id}
+                        name={beer.name}
+                        image_url={beer.image_url}/>
+                    </div>
                 } else {
                     return null
                 }

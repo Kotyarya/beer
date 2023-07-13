@@ -7,6 +7,7 @@ const BeerSmallCard: FC<BeerCardProps> = ({name, id, image_url}) => {
     return (
         <div className={style.smallCard}>
             <img src={image_url || ""} alt=""/>
+            <p>{name}</p>
         </div>
     );
 };

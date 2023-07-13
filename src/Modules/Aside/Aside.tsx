@@ -2,17 +2,25 @@ import React from 'react';
 import style from "./Aside.module.scss"
 import {useAsideStore} from "./store/asideStore";
 import BeerSmallCard from "../../Components/BeerSmallCard/BeerSmallCard";
+import {useBeerListStore} from "../../Pages/HomePage/store/BeerListStore";
 
 const Aside = () => {
-    const asideBeers = useAsideStore(state => state.beers)
+    const {beers, beersId, deleteBeersInAside} = useAsideStore(state => state)
+    const deleteBeers = useBeerListStore(state => state.deleteBeers)
+
+
+    const deleteAll = () => {
+        deleteBeers(beersId)
+        deleteBeersInAside()
+    }
 
 
     return (
         <div className={style.aside}>
-            {asideBeers.map((beers) => {
-                return <BeerSmallCard name={beers.name} image_url={beers.image_url} id={beers.id}/>
+            {beers.map((beers) => {
+                return <BeerSmallCard key={beers.id} name={beers.name} image_url={beers.image_url} id={beers.id}/>
             })}
-            <button>Delete</button>
+            <button onClick={deleteAll}>Delete</button>
         </div>
     );
 };
