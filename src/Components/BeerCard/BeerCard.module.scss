@@ -1,0 +1,12 @@
+.card {
+  height: calc((100vh / 5) - 20px);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  border: 1px solid black;
+  cursor: pointer;
+
+  img {
+    height: 100%;
+  }
+}
